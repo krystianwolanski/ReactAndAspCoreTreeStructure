@@ -1,0 +1,6 @@
+export const treeConstants = {
+    GET_TREE_REQUEST: "TREE_GET_REQUEST",
+    GET_TREE_SUCCESS: "TREE_GET_SUCCESS",
+    GET_TREE_FAILURE: "TREE_GET_FAILURE"
+
+}
