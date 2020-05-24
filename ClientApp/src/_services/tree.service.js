@@ -1,4 +1,4 @@
-import config from 'config'
+
 
 export const treeService = {
     getTree
@@ -9,7 +9,7 @@ function getTree() {
         method: 'GET'
     }
 
-    return fetch(`${config.apiUrl}/tree`, requestOptions).then(handleResponse)
+    return fetch(`tree`, requestOptions).then(handleResponse)
 }
 
 function handleResponse(response) {
