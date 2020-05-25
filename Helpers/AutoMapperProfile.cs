@@ -9,7 +9,8 @@ namespace TreeWithReact.Helpers
         public AutoMapperProfile()
         {
             CreateMap<AddNodeModel, Node>();
-            
+            CreateMap<Node, NodeModel>();
+      
                 
         }
     }

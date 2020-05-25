@@ -24,6 +24,7 @@ namespace TreeWithReact.Controllers
         public async Task<IActionResult> GetTree()
         {
             var tree = await _treeService.GetTreeAsync();
+            
             return Ok(tree);
         }
 
