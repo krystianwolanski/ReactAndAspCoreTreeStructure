@@ -4,9 +4,6 @@ import { history } from '../_helpers';
 import { TreePage } from '../TreePage' 
 
 export class App extends React.Component {
-    constructor(props) {
-        super(props);      
-    }
 
     render() {
         return (

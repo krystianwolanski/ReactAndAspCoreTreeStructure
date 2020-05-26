@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace TreeWithReact.Entities
 {
@@ -12,6 +14,7 @@ namespace TreeWithReact.Entities
         public string Name { get; set; }
         public int? ParentNodeId { get; set; }
         [ForeignKey("ParentNodeId")]
+        [JsonIgnore]
         public Node ParentNode { get; set; }
         public List<Node> SubNodes { get; set; }
         public List<Leaf> SubLeaves { get; set; }

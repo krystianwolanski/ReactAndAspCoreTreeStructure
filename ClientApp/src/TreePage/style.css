@@ -5,14 +5,13 @@ li{
 li > div{
     cursor: pointer;
     padding: 20px;
-    
-   
 }
-
+li>div:hover{
+    background-color: lightgray;
+}
 
 .bgSelected{
     background-color: aqua;
-   
 }
 .contextMenu{
     position: absolute;

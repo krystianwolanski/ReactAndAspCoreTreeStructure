@@ -19,5 +19,4 @@ function getTree() {
     function request() { return { type: treeConstants.GET_TREE_REQUEST } }
     function success(items) { return { type: treeConstants.GET_TREE_SUCCESS, items } }
     function failure(error) { return { type: treeConstants.GET_TREE_FAILURE, error } }
-
 }

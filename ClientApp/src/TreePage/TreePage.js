@@ -4,31 +4,44 @@ import { connect } from 'react-redux';
 import Node from './Node/Node'
 import './style.css'
 import ContextMenu from './ContextMenu'
+import {AddNodeModal} from './Modals/AddNodeModal'
+import { EditNodeModal } from './Modals/EditNodeModal';
 
 class TreePage extends Component {
 
-   
-    componentDidMount() {
-        //this.props.getTree()
-        document.body.addEventListener('click', () => this.handleClick())
+    state = {
+        activeNode: 0,
+        activeNodeName: '',
+        showContextMenu: false,
+        top:0,
+        left:0,
+        showAddNodeModal: false,
+        showEditNodeModal: false
+      }
+    
+    componentDidMount(){
+      //document.addEventListener('click', this.hideContextMenu.bind(this))
+      this.props.getTree()
     }
-    componentWillUnmount() {
-        document.body.removeEventListener('click', () => this.handleClick())
+    componentWillUnmount(){
+      //document.removeEventListener('click',this.hideContextMenu.bind(this))
     }
-    state = {activeNode: 0, showContextMenu: false, top:0, left:0}
-
-    setActiveNode(id) {
+    hideContextMenu(){
+      this.setState({showContextMenu: false})
+    }
+    setActiveNode(id) {   
         this.setState({activeNode: id})
     }
-    handleClick() {
-        this.setState({showContextMenu: false})
-    }
-    handleContextMenu(event, id){
+    handleOnContextMenu(event, id, name){
         event.preventDefault()
         
-        this.setActiveNode(id)
-        this.setState({showContextMenu: true, left: event.clientX, top: event.clientY})
-        
+        this.setState({activeNode: id, activeNodeName: name, showContextMenu: true, left: event.clientX, top: event.clientY})   
+    }
+    toggleShowAddNodeModal() {
+      this.setState({showAddNodeModal: !this.state.showAddNodeModal})
+    }
+    toggleShowEditNodeModal() {
+      this.setState({showEditNodeModal: !this.state.showEditNodeModal})
     }
 
     renderSubNodes(subNodes) {
@@ -38,77 +51,37 @@ class TreePage extends Component {
             {subNodes.map((node) => (
                 <React.Fragment>
                     <li>
-                        <div onContextMenu={(event) => this.handleContextMenu(event, node.id)} className={activeNode===node.id?"bgSelected":""} key={node.id} onClick={() => this.setActiveNode(node.id)}>
+                        <div onContextMenu={(event) => this.handleOnContextMenu(event, node.nodeId, node.name)} className={activeNode===node.nodeId?"bgSelected":""} key={node.nodeId} onClick={() => this.setActiveNode(node.nodeId)}>
                             <Node name={node.name}/>
                         </div>
                         {node.subNodes.length > 0 && this.renderSubNodes(node.subNodes)}
                     </li>
-                    
                 </React.Fragment>
-
             ))}
           </ul>
         );
       }
 
     render() {
-        //const {items} = this.props.tree;
-        const tree = [
-            {
-              id: 1,
-              name: 'node1',
-              subNodes: [
-                {
-                    id: 4,
-                  name: 'node1-1',
-                  subNodes: [],
-                },
-                {
-                    id: 5,
-                  name: 'node1-2',
-                  subNodes: [],
-                },
-              ],
-            },
-            {
-                id: 2,
-              name: 'node2',
-              subNodes: [],
-            },
-            {
-                id: 3,
-              name: 'node3',
-              subNodes: [
-                {
-                    id: 6,
-                  name: 'node3-1',
-                  subNodes: [
-                    {
-                        id: 7,
-                      name: 'node3-1-1',
-                      subNodes: [],
-                    },
-                    {
-                        id: 8,
-                      name: 'node3-1-2',
-                      subNodes: [],
-                    },
-                  ],
-                },
-                {
-                    id: 9,
-                  name: 'node3-2',
-                  subNodes: [],
-                }
-              ],
-            },
-          ];
-
+        const tree2 = this.props.tree.items;
+        
         return(
             <React.Fragment>
-                {this.renderSubNodes(tree)}
-                {this.state.showContextMenu? <ContextMenu left={this.state.left} top={this.state.top}/>:''}
-            
+                {tree2 && this.renderSubNodes(tree2)}
+                {this.state.showContextMenu? <ContextMenu  showAddNodeModal={() => this.toggleShowAddNodeModal()} showEditNodeModal={() => this.toggleShowEditNodeModal()} left={this.state.left} top={this.state.top}/>:''}
+                
+                <AddNodeModal
+                  show={this.state.showAddNodeModal} 
+                  onHide={() => this.toggleShowAddNodeModal()}
+                  parentNodeId={this.state.activeNode}
+                />
+
+                <EditNodeModal
+                  show={this.state.showEditNodeModal}
+                  onHide={() => this.toggleShowEditNodeModal()}
+                  nodeId={this.state.activeNode}
+                  nodeName={this.state.activeNodeName}
+                />
             </React.Fragment>
         )
     }

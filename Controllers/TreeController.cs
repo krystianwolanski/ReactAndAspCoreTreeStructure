@@ -32,10 +32,28 @@ namespace TreeWithReact.Controllers
         [HttpPost("node")]
         public async Task<IActionResult> AddNode([FromBody] AddNodeModel model)
         {
-            await _treeService.AddNodeAsync(model);
+            var node = await _treeService.AddNodeAsync(model);
+       
+            return Ok(node);
+        }
+
+        [HttpPut("node")]
+        public async Task<IActionResult> EditNode([FromBody] EditNodeModel model)
+        {
+            var answer = await _treeService.EditNodeAsync(model);
 
             return Ok();
+        }
 
+        [HttpPost("leaf")]
+        public async Task<IActionResult> AddLeaf([FromBody] AddLeafModel model)
+        {
+            var result = await _treeService.AddLeafAsync(model);
+            
+            if (!result)
+                return NotFound();
+
+            return Ok();
         }
     }
 }

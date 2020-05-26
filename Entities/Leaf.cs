@@ -13,7 +13,7 @@ namespace TreeWithReact.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LeafId { get; set; }
         public string Name { get; set; }
-        public int? ParentNodeId { get; private set; }
+        public int? ParentNodeId { get; set; }
         [ForeignKey("ParentNodeId")]
         public Node ParentNode { get; set; }
     }

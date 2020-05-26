@@ -1,23 +1,30 @@
-import React from 'react'
-import {MyVerticallyCenteredModal} from './MyVerticallyCenteredModal'
+import React, { Component } from 'react'
 
-function ContextMenu({left, top}){
 
-    const [modalShow, setModalShow] = React.useState(false);
+class ContextMenu extends Component{
 
-    return(
-        <React.Fragment>
-            <ul className="contextMenu" style={{left: left, top: top}}>
-                <li onClick={() => setModalShow(true)}>Add Node</li>
-                <li>Edit Node</li>
-            </ul>
+    render(){
+        const {left, top} = this.props 
+        return(
+            <React.Fragment>
+                <ul className="contextMenu" style={{left: left, top: top}}>
+                    <li onClick={(event) => {
+                        event.stopPropagation()
+                        this.props.showAddNodeModal()
+                      
+                    }}>Add Node</li>
+                    <li onClick={(event) => {
+                        event.stopPropagation()
+                        this.props.showEditNodeModal()
+                    }}>Edit Node</li>
+                </ul>
+    
+                
+            </React.Fragment>
+            
+        )
+    }
 
-            <MyVerticallyCenteredModal 
-                show={modalShow}
-                onHide={() => setModalShow(false)}/>
-        </React.Fragment>
-        
-    )
 }
 
 export default ContextMenu

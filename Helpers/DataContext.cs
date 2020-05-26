@@ -15,6 +15,7 @@ namespace TreeWithReact.Helpers
         public DataContext(IConfiguration configuration)
         {
             Configuration = configuration;
+       
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -33,6 +34,7 @@ namespace TreeWithReact.Helpers
             modelBuilder.Entity<Node>()
                 .HasMany(cat => cat.SubLeaves)
                 .WithOne(cat => cat.ParentNode);
+
 
             //modelBuilder.Seed(); // I will have to work with it. The method is in the ModelBuilderExtension class
         }
