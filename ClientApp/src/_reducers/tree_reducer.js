@@ -1,4 +1,4 @@
-import {treeConstants} from '../_constants'
+import {treeConstants, nodeConstants} from '../_constants'
 
 export function tree(state = {}, action) {
     switch(action.type) {
@@ -16,12 +16,12 @@ export function tree(state = {}, action) {
                 error: action.error
             }
 
-        case treeConstants.ADD_NODE_REQUEST:
+        case nodeConstants.ADD_NODE_REQUEST:
             return {
                 ...state,
                 addingNode: true
             }
-        case treeConstants.ADD_NODE_SUCCESS:   
+        case nodeConstants.ADD_NODE_SUCCESS:   
             function addSubNode(subNodes) {
                 subNodes.forEach(element => {
                     if (element.nodeId === action.parentNodeId) {
@@ -40,17 +40,17 @@ export function tree(state = {}, action) {
                 items: state.items,
                 addingNode: false
             }
-        case treeConstants.ADD_NODE_FAILURE:
+        case nodeConstants.ADD_NODE_FAILURE:
             return {
                 error: action.error
             }
 
-        case treeConstants.EDIT_NODE_REQUEST:
+        case nodeConstants.EDIT_NODE_REQUEST:
             return{
                 items: state.items,
                 editingNode: true
             }
-        case treeConstants.EDIT_NODE_SUCCESS:
+        case nodeConstants.EDIT_NODE_SUCCESS:
             function editElement(subNodes){
                 subNodes.forEach( element => {
                     if (element.nodeId === action.NodeId) {
@@ -68,10 +68,23 @@ export function tree(state = {}, action) {
                 items: state.items,
                 editingNode: false
             }
-        case treeConstants.EDIT_NODE_FAILURE:
+        case nodeConstants.EDIT_NODE_FAILURE:
             return{
                 error: action.error
             }
+        case nodeConstants.DELETE_NODE_REQUEST:
+            return{
+                deletingNode: true
+            }
+        case nodeConstants.DELETE_NODE_SUCCESS:
+            return{
+                deletingNode: false
+            }
+        case nodeConstants.DELETE_NODE_FAILURE:
+            return{
+                error: action.error
+            }
+
         default:
             return state;
     }

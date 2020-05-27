@@ -14,7 +14,6 @@ namespace TreeWithReact.Entities
         public string Name { get; set; }
         public int? ParentNodeId { get; set; }
         [ForeignKey("ParentNodeId")]
-        [JsonIgnore]
         public Node ParentNode { get; set; }
         public List<Node> SubNodes { get; set; }
         public List<Leaf> SubLeaves { get; set; }

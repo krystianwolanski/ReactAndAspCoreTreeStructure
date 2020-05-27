@@ -3,7 +3,8 @@
 export const treeService = {
     getTree,
     addNode,
-    editNode
+    editNode,
+    deleteNode
 }
 
 function getTree() {
@@ -20,7 +21,7 @@ function addNode(Name, ParentNodeId) {
         body: JSON.stringify({Name, ParentNodeId}),
     }
 
-    return fetch('tree/node',requestOptions).then(handleResponse)
+    return fetch('node',requestOptions).then(handleResponse)
 }
 
 function editNode(NodeId, Name) {
@@ -30,7 +31,16 @@ function editNode(NodeId, Name) {
         body: JSON.stringify({NodeId, Name}),
     }
 
-    return fetch('tree/node', requestOptions).then(handleResponse)
+    return fetch('node', requestOptions).then(handleResponse)
+}
+function deleteNode(NodeId) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({NodeId}),
+    }
+
+    return fetch('node', requestOptions).then(handleResponse)
 }
 
 function handleResponse(response) {

@@ -10,7 +10,7 @@ using TreeWithReact.Helpers;
 namespace TreeWithReact.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200523151204_Init")]
+    [Migration("20200527124826_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

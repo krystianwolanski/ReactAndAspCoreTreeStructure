@@ -1,10 +1,14 @@
+
 li{
     list-style: none;
 }
 
 li > div{
     cursor: pointer;
-    padding: 20px;
+    padding: 10px;
+    width: 50%;
+    display: flex;
+    align-items: center;
 }
 li>div:hover{
     background-color: lightgray;
@@ -27,3 +31,35 @@ li>div:hover{
 .contextMenu >li:hover{
     background-color: lightgray;
 }
+
+.container{
+    margin-top:50px;
+    
+}
+.arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+  }
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transition: transform .2s ease-in;
+  }
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transition: transform .2s ease-in;
+  }
+  .listItem{
+      padding-left: 8px;
+  }
+  .item1 > ul{
+      display: block;
+      transition: display 1s ease-in;
+  }
+  .hide > ul{
+      display: none;
+      
+  }
+

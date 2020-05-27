@@ -4,24 +4,26 @@ import React, { Component } from 'react'
 class ContextMenu extends Component{
 
     render(){
-        const {left, top} = this.props 
         return(
             <React.Fragment>
-                <ul className="contextMenu" style={{left: left, top: top}}>
+                <ul className="contextMenu" style={{left: this.props.left, top: this.props.top}}>
                     <li onClick={(event) => {
                         event.stopPropagation()
                         this.props.showAddNodeModal()
                       
                     }}>Add Node</li>
+                    <li>Add Leaf</li>
                     <li onClick={(event) => {
                         event.stopPropagation()
                         this.props.showEditNodeModal()
-                    }}>Edit Node</li>
+                    }}>Edit</li>
+
+                    <li onClick={(event) => {
+                        event.stopPropagation()
+                        this.props.showDeleteNodeModal()
+                    }}>Delete</li>
                 </ul>
-    
-                
             </React.Fragment>
-            
         )
     }
 

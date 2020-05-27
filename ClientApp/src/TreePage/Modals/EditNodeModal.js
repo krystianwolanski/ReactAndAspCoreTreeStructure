@@ -23,7 +23,6 @@ class EditNodeModal extends Component {
     }
 
     render() {
-        console.log(this.props.nodeName)
     return (
         <Modal
             onHide={() => this.hideAndClearName()}
@@ -38,7 +37,11 @@ class EditNodeModal extends Component {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form.Control value={this.state.nodeName} onChange={(event) => this.handleChange(event)} type="text" placeholder="Nazwa" />
+            <Form.Control 
+                value={this.state.nodeName}
+                onChange={(event) => this.handleChange(event)}
+                type="text"
+                placeholder="Nazwa" />
         </Modal.Body>
         <Modal.Footer>
             <Button onClick={() => this.editNode()} variant="success">Edytuj</Button>

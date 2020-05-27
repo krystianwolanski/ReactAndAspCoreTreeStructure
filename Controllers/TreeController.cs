@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TreeWithReact.Models;
@@ -7,6 +8,7 @@ using TreeWithReact.Services;
 namespace TreeWithReact.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("[controller]")]
     public class TreeController : ControllerBase
     {
@@ -28,22 +30,6 @@ namespace TreeWithReact.Controllers
             return Ok(tree);
         }
 
-
-        [HttpPost("node")]
-        public async Task<IActionResult> AddNode([FromBody] AddNodeModel model)
-        {
-            var node = await _treeService.AddNodeAsync(model);
-       
-            return Ok(node);
-        }
-
-        [HttpPut("node")]
-        public async Task<IActionResult> EditNode([FromBody] EditNodeModel model)
-        {
-            var answer = await _treeService.EditNodeAsync(model);
-
-            return Ok();
-        }
 
         [HttpPost("leaf")]
         public async Task<IActionResult> AddLeaf([FromBody] AddLeafModel model)
