@@ -50,7 +50,13 @@ namespace TreeWithReact.Controllers
 
             return Ok();
         }
-        //[HttpPost("sort")]
-        //public async Task<IActionResult> SortNode([FromBody] SortNodeModel model)
+        [HttpPost("sort")]
+        public async Task<IActionResult> SortNode([FromBody] SortNodeModel model)
+        {
+            var node = await _nodeService.SortNode(model);
+            var mappedNode = _mapper.Map<NodeModel>(node);
+
+            return Ok(mappedNode);
+        }
     }
 }

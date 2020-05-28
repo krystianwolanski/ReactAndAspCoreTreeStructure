@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {treeActions, leafActions} from '../_actions'
+import {treeActions, leafActions, nodeActions} from '../_actions'
 import { connect } from 'react-redux';
 import './style.css'
 import {NodeContextMenu, LeafContextMenu} from './ContextMenus'
@@ -28,15 +28,15 @@ class TreePage extends Component {
       }
     
     componentDidMount(){
-      this.props.getTree()
-      //document.addEventListener('click', this.hideContextMenu.bind(this))
+      //this.props.getTree()
+      document.addEventListener('click', this.hideContextMenu.bind(this))
       
     }
     componentWillUnmount(){
-      //document.removeEventListener('click',this.hideContextMenu.bind(this))
+      document.removeEventListener('click',this.hideContextMenu.bind(this))
     }
     hideContextMenu(){
-      this.setState({showContextMenu: false})
+      this.setState({showNodeContextMenu: false,showLeafContextMenu: false })
     }
     setActiveNode(id) {   
         this.setState({activeNode: id})
@@ -45,7 +45,7 @@ class TreePage extends Component {
         event.preventDefault()
         
         let menuContext;
-        if(contextMenu == 'showNodeContextMenu') {
+        if(contextMenu === 'showNodeContextMenu') {
           menuContext = {showNodeContextMenu: true, showLeafContextMenu: false}
         }
         else {
@@ -92,6 +92,9 @@ class TreePage extends Component {
     }
     deleteLeaf(leafId) {
       this.props.deleteLeaf(leafId)
+    }
+    sort(nodeId) {
+      this.props.sortNode(nodeId)
     }
     renderSubNodes(subNodes) {
         return (
@@ -143,11 +146,71 @@ class TreePage extends Component {
       }
 
     render() {
-        const tree2 = this.props.tree.items;
-
+        const tree2 = this.props.tree.items
+        
+        const tree = [
+          {
+            nodeId: 1,
+            name: "node1",
+            subNodes: [
+              {
+                nodeId: 4,
+                name: "node1-1",
+                subNodes: [],
+                subLeaves: []
+              },
+              {
+                nodeId: 5,
+                name: "node1-2",
+                subNodes: [],
+                subLeaves: []
+              }
+            ],
+            subLeaves: []
+          },
+          {
+            nodeId: 2,
+            name: "node2",
+            subNodes: [],
+            subLeaves: []
+          },
+          {
+            nodeId: 3,
+            name: "node3",
+            subNodes: [
+              {
+                nodeId: 6,
+                name: "node3-1",
+                subNodes: [
+                  {
+                    nodeId: 7,
+                    name: "node3-1-1",
+                    subNodes: [],
+                    subLeaves: []
+                  },
+                  {
+                    nodeId: 8,
+                    name: "node3-1-2",
+                    subNodes: [],
+                    subLeaves: []
+                  }
+                ],
+                subLeaves: []
+              },
+              {
+                nodeId: 9,
+                name: "node3-2",
+                subNodes: [],
+                subLeaves: []
+              }
+            ],
+            subLeaves: []
+          }
+        ];
         return(
+          
             <Container>
-                {tree2 && this.renderSubNodes(tree2)}
+                {this.renderSubNodes(tree)}
                 
                 {
                   this.state.showNodeContextMenu &&
@@ -156,7 +219,7 @@ class TreePage extends Component {
                       showEditNodeModal={() => this.toggleShowEditNodeModal()}
                       showDeleteNodeModal={() => this.toggleShowDeleteNodeModal()}
                       showAddLeafModal={() => this.toggleShowAddLeafModal()}
-                    
+                      sort={() => this.sort(this.state.selectedItemId)}
                       left={this.state.left}
                       top={this.state.top}
                     />
@@ -208,13 +271,13 @@ class TreePage extends Component {
     }
 }
 function mapState(state){
-    
 
-    return state;
+    return state
 }
 const actionCreators = {
     getTree: treeActions.getTree,
-    deleteLeaf: leafActions.deleteLeaf
+    deleteLeaf: leafActions.deleteLeaf,
+    sortNode: nodeActions.sortNode
 }
 
 const connectedApp = connect(mapState, actionCreators)(TreePage)

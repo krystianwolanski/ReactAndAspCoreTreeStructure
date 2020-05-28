@@ -4,7 +4,8 @@ import { nodeConstants } from '../_constants'
 export const nodeActions = {
     addNode,
     editNode,
-    deleteNode
+    deleteNode,
+    sortNode
 }
 
 function addNode(Name, ParentNodeId ) {
@@ -52,4 +53,11 @@ function deleteNode(NodeId ) {
     function request() { return { type: nodeConstants.DELETE_NODE_REQUEST } }
     function success(item) { return { type: nodeConstants.DELETE_NODE_SUCCESS, item } }
     function failure(error) { return { type: nodeConstants.DELETE_NODE_FAILURE, error } }
+}
+function sortNode(NodeId) {
+    return dispatch => {
+        dispatch(sort(NodeId))
+    }
+
+    function sort(NodeId) {return {type: nodeConstants.SORT_NODE, NodeId }}
 }

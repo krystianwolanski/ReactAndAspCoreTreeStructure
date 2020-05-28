@@ -67,6 +67,11 @@ export function tree(state = {}, action) {
                 items: state.items,
                 error: action.error
             }
+        case nodeConstants.SORT_NODE:
+            sortNode(state.items)
+            return {
+                items: state.items
+            }
         case leafConstants.ADD_LEAF_REQUEST:
             return {
                 items: state.items,
@@ -114,7 +119,7 @@ export function tree(state = {}, action) {
                 items: state.items,
                 error: action.error
             }
-                
+        
         default:
             return state;
     }
@@ -183,6 +188,32 @@ export function tree(state = {}, action) {
                 })
             }
             deleteLeaf(node.subNodes)
+        })
+    }
+
+    function sortNode(subNodes) {
+        subNodes.forEach( node => {
+            if(node.nodeId === action.NodeId){
+                function compare(a, b) {
+                    const nameA = a.name.toUpperCase();
+                    const nameB = b.name.toUpperCase();
+                  
+                    let comparison = 0;
+                    if (nameA > nameB) {
+                      comparison = 1;
+                    } else if (nameA < nameB) {
+                      comparison = -1;
+                    }
+                    return comparison;
+                  }
+                node.subNodes.sort(compare)
+                node.subLeaves.sort(compare)
+
+                return node
+            }
+            else{
+                sortNode(node.subNodes)
+            }
         })
     }
 

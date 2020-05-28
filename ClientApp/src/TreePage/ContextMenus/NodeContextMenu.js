@@ -27,6 +27,11 @@ export class NodeContextMenu extends Component{
                         event.stopPropagation()
                         this.props.showDeleteNodeModal()
                     }}>Delete</li>
+
+                    <li onClick={(event) => {
+                        event.stopPropagation()
+                        this.props.sort()
+                    }}>Sort</li>
                 </ul>
             </React.Fragment>
         )

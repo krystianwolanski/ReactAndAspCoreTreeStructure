@@ -15,6 +15,7 @@ namespace TreeWithReact.Services
         Task<Node> AddNodeAsync(AddNodeModel model);
         Task<bool> EditNodeAsync(EditNodeModel model);
         Task<bool> DeleteNodeAsync(DeleteNodeModel model);
+        Task<Node> SortNode(SortNodeModel model);
     }
     public class NodeService : INodeService
     {
@@ -41,7 +42,7 @@ namespace TreeWithReact.Services
             var node = await _context.Nodes.SingleOrDefaultAsync(x => x.NodeId == model.NodeId);
             _context.Remove(node);
             await _context.SaveChangesAsync();
-
+            
             return true;
         }
 
@@ -51,8 +52,19 @@ namespace TreeWithReact.Services
 
             node.Name = model.Name;
             await _context.SaveChangesAsync();
-
+            
             return true;
+        }
+
+        public async Task<Node> SortNode(SortNodeModel model)
+        {
+            var node = await _context.Nodes.Include(x => x.SubNodes).Include(x => x.SubLeaves).SingleOrDefaultAsync(x => x.NodeId == model.NodeId);
+            node.SubNodes.OrderBy(x => x.Name);
+            node.SubLeaves.OrderByDescending(x => x.Name);
+
+            await _context.SaveChangesAsync();
+            return node;
+
         }
     }
 }

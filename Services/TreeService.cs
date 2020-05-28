@@ -33,7 +33,7 @@ namespace TreeWithReact.Services
         {
             var nodes = await _context.Nodes.Include(x => x.SubLeaves).ToListAsync();
             var notDuplicateNodes = nodes.Where(x => x.ParentNode == null);
-             
+            
             return notDuplicateNodes;
         }
     }
