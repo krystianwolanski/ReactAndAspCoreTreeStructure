@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
-import {nodeActions} from '../../_actions'
+import {nodeActions} from '../../../_actions'
 import { connect } from 'react-redux';
 
 class EditNodeModal extends Component {
@@ -33,7 +33,7 @@ class EditNodeModal extends Component {
         >
         <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-                Edytuj nazwę
+                Edit name
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -41,11 +41,11 @@ class EditNodeModal extends Component {
                 value={this.state.nodeName}
                 onChange={(event) => this.handleChange(event)}
                 type="text"
-                placeholder="Nazwa" />
+                placeholder="Name" />
         </Modal.Body>
         <Modal.Footer>
-            <Button onClick={() => this.editNode()} variant="success">Edytuj</Button>
-            <Button onClick={() => this.hideAndClearName()}>Zamknij</Button>
+            <Button onClick={() => this.editNode()} variant="success">Edit</Button>
+            <Button onClick={() => this.hideAndClearName()}>Close</Button>
         </Modal.Footer>
         </Modal>
     );

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {treeActions} from '../_actions'
+import {treeActions, leafActions} from '../_actions'
 import { connect } from 'react-redux';
 import './style.css'
-import ContextMenu from './ContextMenu'
-import {AddNodeModal, EditNodeModal, DeleteNodeModal} from './Modals'
+import {NodeContextMenu, LeafContextMenu} from './ContextMenus'
+import {AddNodeModal, EditNodeModal, DeleteNodeModal} from './Modals/NodeModals'
+import {AddLeafModal, EditLeafModal} from './Modals/LeafModals'
 import {Container} from 'react-bootstrap'
 
 class TreePage extends Component {
@@ -13,17 +14,23 @@ class TreePage extends Component {
         selectedItem: '',
         selectedItemId: 0,
         activeNodeName: '',
-        showContextMenu: false,
+        showNodeContextMenu: false,
+        showLeafContextMenu: false,
         top:0,
         left:0,
+        
         showAddNodeModal: false,
         showEditNodeModal: false,
-        showDeleteNodeModal: false
+        showDeleteNodeModal: false,
+
+        showAddLeafModal: false,
+        showEditLeafModal: false
       }
     
     componentDidMount(){
-      //document.addEventListener('click', this.hideContextMenu.bind(this))
       this.props.getTree()
+      //document.addEventListener('click', this.hideContextMenu.bind(this))
+      
     }
     componentWillUnmount(){
       //document.removeEventListener('click',this.hideContextMenu.bind(this))
@@ -34,14 +41,22 @@ class TreePage extends Component {
     setActiveNode(id) {   
         this.setState({activeNode: id})
     }
-    handleOnContextMenu(event, selectedItemId, name, selectedItem){
+    handleOnContextMenu(event, selectedItemId, name, selectedItem, contextMenu){
         event.preventDefault()
         
+        let menuContext;
+        if(contextMenu == 'showNodeContextMenu') {
+          menuContext = {showNodeContextMenu: true, showLeafContextMenu: false}
+        }
+        else {
+          menuContext = {showNodeContextMenu: false, showLeafContextMenu: true}
+        }
+          
         this.setState({
           selectedItemId: selectedItemId,
           selectedItem: selectedItem,
           activeNodeName: name,
-          showContextMenu: true, 
+          ...menuContext, 
           left: event.clientX, 
           top: event.clientY})   
     }
@@ -54,6 +69,13 @@ class TreePage extends Component {
     toggleShowDeleteNodeModal() {
       this.setState({showDeleteNodeModal: !this.state.showDeleteNodeModal})
     }
+    toggleShowAddLeafModal() {
+      this.setState({showAddLeafModal: !this.state.showAddLeafModal})
+    }
+    toggleShowEditLeafModal() {
+      this.setState({showEditLeafModal: !this.state.showEditLeafModal})
+    }
+
     toggleHideListItemsId(nodeId) {
       const {hidelistItemsId} = this.state
       
@@ -68,7 +90,9 @@ class TreePage extends Component {
         this.setState({hidelistItemsId: [...hidelistItemsId, nodeId]})
       }
     }
-
+    deleteLeaf(leafId) {
+      this.props.deleteLeaf(leafId)
+    }
     renderSubNodes(subNodes) {
         return (
           <React.Fragment >
@@ -76,7 +100,7 @@ class TreePage extends Component {
                 <ul>
                   <li className = {this.state.hidelistItemsId.includes(node.nodeId) ? "hide":""} key={node.Id}>
                       <div 
-                        onContextMenu={(event) => this.handleOnContextMenu(event, node.nodeId, node.name, "n"+node.nodeId)}
+                        onContextMenu={(event) => this.handleOnContextMenu(event, node.nodeId, node.name, "n"+node.nodeId,'showNodeContextMenu')}
                         className={this.state.selectedItem === "n"+node.nodeId ? "bgSelected":""}
                         onClick={() => {
                           this.setState({
@@ -84,13 +108,13 @@ class TreePage extends Component {
                             selectedItemId: node.nodeId,
                             })
 
-                            if(node.subNodes.length > 0){
+                            if(node.subNodes.length > 0 || node.subLeaves.length > 0){
                               this.toggleHideListItemsId(node.nodeId)
                             }
                             
                         }}>
                       
-                        <i className={this.state.hidelistItemsId.includes(node.nodeId) || node.subNodes.length <= 0? "arrow right":"arrow down"}></i>  
+                        <i className={this.state.hidelistItemsId.includes(node.nodeId) || (node.subNodes.length <= 0 && node.subLeaves.length <= 0)? "arrow right":"arrow down"}></i>  
                         <span className="listItem">{node.name}</span>
 
                       </div>
@@ -101,6 +125,7 @@ class TreePage extends Component {
                           {node.subLeaves.map((leaf) => (
                             <li>
                               <div
+                                onContextMenu={(event) => this.handleOnContextMenu(event, leaf.leafId, leaf.name, "l"+leaf.leafId, 'showLeafContextMenu')}
                                 className = {this.state.selectedItem === "l"+leaf.leafId ? "bgSelected":""}
                                 onClick = {() => this.setState({selectedItem: "l"+leaf.leafId, selectedItemId: leaf.leafId})}
                               >
@@ -125,14 +150,26 @@ class TreePage extends Component {
                 {tree2 && this.renderSubNodes(tree2)}
                 
                 {
-                  this.state.showContextMenu? 
-                    <ContextMenu  
+                  this.state.showNodeContextMenu &&
+                    <NodeContextMenu  
                       showAddNodeModal={() => this.toggleShowAddNodeModal()}
                       showEditNodeModal={() => this.toggleShowEditNodeModal()}
                       showDeleteNodeModal={() => this.toggleShowDeleteNodeModal()}
+                      showAddLeafModal={() => this.toggleShowAddLeafModal()}
+                    
                       left={this.state.left}
-                      top={this.state.top}/>
-                  :''
+                      top={this.state.top}
+                    />
+                }
+
+                {
+                  this.state.showLeafContextMenu &&
+                    <LeafContextMenu
+                      showEditLeafModal = {() => this.toggleShowEditLeafModal()}
+                      deleteLeaf={() => this.deleteLeaf(this.state.selectedItemId)}
+                      left = {this.state.left}
+                      top = {this.state.top}
+                    />
                 }
                 
                 
@@ -142,7 +179,8 @@ class TreePage extends Component {
                   parentNodeId={this.state.selectedItemId}
                 />
 
-                {this.state.showEditNodeModal && <EditNodeModal
+                {this.state.showEditNodeModal && 
+                <EditNodeModal
                   show={this.state.showEditNodeModal}
                   onHide={() => this.toggleShowEditNodeModal()}
                   nodeId={this.state.selectedItemId}
@@ -152,6 +190,19 @@ class TreePage extends Component {
                   show={this.state.showDeleteNodeModal}
                   onHide={() => this.toggleShowDeleteNodeModal()}
                 />
+
+                <AddLeafModal
+                  show={this.state.showAddLeafModal} 
+                  onHide={() => this.toggleShowAddLeafModal()}
+                  parentNodeId={this.state.selectedItemId}
+                />
+                {this.state.showEditLeafModal && 
+                <EditLeafModal
+                  show={this.state.showEditLeafModal}
+                  onHide={() => this.toggleShowEditLeafModal()}
+                  leafId={this.state.selectedItemId}
+                  leafName={this.state.activeNodeName}
+                />}
             </Container>
         )
     }
@@ -162,7 +213,8 @@ function mapState(state){
     return state;
 }
 const actionCreators = {
-    getTree: treeActions.getTree
+    getTree: treeActions.getTree,
+    deleteLeaf: leafActions.deleteLeaf
 }
 
 const connectedApp = connect(mapState, actionCreators)(TreePage)

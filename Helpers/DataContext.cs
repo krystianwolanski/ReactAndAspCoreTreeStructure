@@ -29,14 +29,15 @@ namespace TreeWithReact.Helpers
 
             modelBuilder.Entity<Node>()
                 .HasMany(cat => cat.SubNodes)
-                .WithOne(cat => cat.ParentNode);
+                .WithOne(cat => cat.ParentNode)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
 
             modelBuilder.Entity<Node>()
                 .HasMany(cat => cat.SubLeaves)
-                .WithOne(cat => cat.ParentNode);
+                .WithOne(cat => cat.ParentNode)
+                .OnDelete(DeleteBehavior.ClientCascade);
                 
-            //modelBuilder.Seed(); // I will have to work with it. The method is in the ModelBuilderExtension class
         }
 
         public DbSet<Node> Nodes { get; set; }

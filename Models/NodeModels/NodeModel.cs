@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TreeWithReact.Entities;
+﻿using System.Collections.Generic;
+using TreeWithReact.Models.LeafModels;
 
-namespace TreeWithReact.Models
+namespace TreeWithReact.Models.NodeModels
 {
     public class NodeModel
     {

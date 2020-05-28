@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using TreeWithReact.Entities;
 using TreeWithReact.Models;
+using TreeWithReact.Models.LeafModels;
+using TreeWithReact.Models.NodeModels;
 
 namespace TreeWithReact.Helpers
 {

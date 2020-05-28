@@ -1,24 +1,24 @@
 import React,{Component} from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
-import {nodeActions} from '../../_actions'
+import {leafActions} from '../../../_actions'
 import { connect } from 'react-redux';
 
-class AddNodeModal extends Component {
+class AddLeafModal extends Component {
 
   state = {
-    nameNode: ''
+    leafName: ''
   }
 
   handleChange({target}) {
-    this.setState({nameNode: target.value})
+    this.setState({leafName: target.value})
   }
-  addNode(parentNodeId) {
-    this.props.addNode(this.state.nameNode, parentNodeId)
+  addLeaf(parentNodeId) {
+    this.props.addLeaf(this.state.leafName, parentNodeId)
     this.hideAndClearName()
   }
   hideAndClearName() {
     this.props.onHide()
-    this.setState({nameNode:''})
+    this.setState({leafName:''})
   }
 
   render() {
@@ -32,15 +32,15 @@ class AddNodeModal extends Component {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Dodaj węzeł
+            Add leaf
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Control value={this.state.nameNode} onChange={(event) => this.handleChange(event)} type="text" placeholder="Nazwa" />
+          <Form.Control value={this.state.leafName} onChange={(event) => this.handleChange(event)} type="text" placeholder="Name" />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.addNode(this.props.parentNodeId)} variant="success">Dodaj</Button>
-          <Button onClick={() => this.hideAndClearName()}>Zamknij</Button>
+          <Button onClick={() => this.addLeaf(this.props.parentNodeId)} variant="success">Add</Button>
+          <Button onClick={() => this.hideAndClearName()}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -52,8 +52,8 @@ function mapState(state){
   return state;
 }
 const actionCreators = {
-  addNode: nodeActions.addNode
+  addLeaf: leafActions.addLeaf
 }
 
-const connectedApp = connect(mapState, actionCreators)(AddNodeModal)
-export {connectedApp as AddNodeModal}
+const connectedApp = connect(mapState, actionCreators)(AddLeafModal)
+export {connectedApp as AddLeafModal}

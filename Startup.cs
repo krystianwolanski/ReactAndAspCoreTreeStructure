@@ -43,6 +43,7 @@ namespace TreeWithReact
             services.AddDbContext<DataContext>();
             services.AddScoped<ITreeService, TreeService>();
             services.AddScoped<INodeService, NodeService>();
+            services.AddScoped<ILeafService, LeafService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

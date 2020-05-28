@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TreeWithReact.Models;
+using TreeWithReact.Models.NodeModels;
 using TreeWithReact.Services;
 
 namespace TreeWithReact.Controllers
@@ -17,19 +18,22 @@ namespace TreeWithReact.Controllers
     {
         private readonly ILogger<NodeController> _logger;
         private readonly INodeService _nodeService;
+        private readonly IMapper _mapper;
 
-        public NodeController(ILogger<NodeController> logger, INodeService nodeService)
+        public NodeController(ILogger<NodeController> logger, INodeService nodeService, IMapper mapper)
         {
             _logger = logger;
             _nodeService = nodeService;
+            _mapper = mapper;
 
         }
         [HttpPost]
         public async Task<IActionResult> AddNode([FromBody] AddNodeModel model)
         {
             var node = await _nodeService.AddNodeAsync(model);
-
-            return Ok(node);
+            var nodeModel = _mapper.Map<NodeModel>(node);
+            
+            return Ok(nodeModel);
         }
 
         [HttpPut]
@@ -42,9 +46,11 @@ namespace TreeWithReact.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteNode([FromBody]DeleteNodeModel model)
         {
-            var response = await _nodeService.DeleteNodeAsync(model.NodeId);
+            var response = await _nodeService.DeleteNodeAsync(model);
 
             return Ok();
         }
+        //[HttpPost("sort")]
+        //public async Task<IActionResult> SortNode([FromBody] SortNodeModel model)
     }
 }

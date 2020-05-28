@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TreeWithReact.Helpers;
 
 namespace TreeWithReact.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200527210346_AddedNotNullForNames")]
+    partial class AddedNotNullForNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,16 +67,14 @@ namespace TreeWithReact.Migrations
                 {
                     b.HasOne("TreeWithReact.Entities.Node", "ParentNode")
                         .WithMany("SubLeaves")
-                        .HasForeignKey("ParentNodeId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .HasForeignKey("ParentNodeId");
                 });
 
             modelBuilder.Entity("TreeWithReact.Entities.Node", b =>
                 {
                     b.HasOne("TreeWithReact.Entities.Node", "ParentNode")
                         .WithMany("SubNodes")
-                        .HasForeignKey("ParentNodeId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .HasForeignKey("ParentNodeId");
                 });
 #pragma warning restore 612, 618
         }

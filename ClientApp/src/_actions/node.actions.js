@@ -1,16 +1,17 @@
-import { treeService } from '../_services'
+import { nodeService } from '../_services'
 import { nodeConstants } from '../_constants'
 
 export const nodeActions = {
     addNode,
-    editNode
+    editNode,
+    deleteNode
 }
 
 function addNode(Name, ParentNodeId ) {
     return dispatch => {
         dispatch(request())
 
-        treeService.addNode(Name, ParentNodeId)
+        nodeService.addNode(Name, ParentNodeId)
             .then(
                 item => dispatch(success(item,ParentNodeId)),
                 error => dispatch(failure(error))
@@ -26,7 +27,7 @@ function editNode(NodeId, Name ) {
     return dispatch => {
         dispatch(request())
 
-        treeService.editNode(NodeId, Name)
+        nodeService.editNode(NodeId, Name)
             .then(
                 item => dispatch(success(NodeId,Name)),
                 error => dispatch(failure(error))
@@ -41,7 +42,7 @@ function deleteNode(NodeId ) {
     return dispatch => {
         dispatch(request())
 
-        treeService.deleteNode(NodeId)
+        nodeService.deleteNode(NodeId)
             .then(
                 item => dispatch(success(item)),
                 error => dispatch(failure(error))

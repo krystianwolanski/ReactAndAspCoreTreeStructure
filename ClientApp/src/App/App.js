@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../_helpers';
-import { TreePage } from '../TreePage' 
+import { TreePage } from '../TreePage/TreePage' 
 
 export class App extends React.Component {
 
