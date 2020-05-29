@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TreeWithReact.Models;
 using TreeWithReact.Models.NodeModels;
 using TreeWithReact.Services;
 
@@ -39,8 +40,9 @@ namespace TreeWithReact.Controllers
         [HttpPut]
         public async Task<IActionResult> EditNode([FromBody] EditNodeModel model)
         {
+            
             var response = await _nodeService.EditNodeAsync(model);
-
+     
             return Ok();
         }
         [HttpDelete]
@@ -53,10 +55,18 @@ namespace TreeWithReact.Controllers
         [HttpPost("sort")]
         public async Task<IActionResult> SortNode([FromBody] SortNodeModel model)
         {
-            var node = await _nodeService.SortNode(model);
+            var node = await _nodeService.SortNodeAsync(model);
             var mappedNode = _mapper.Map<NodeModel>(node);
 
             return Ok(mappedNode);
+        }
+        [HttpPost("move")]
+        public async Task<IActionResult> MoveNode([FromBody] MoveElementModel model)
+        {
+            var response = await _nodeService.MoveNodeAsync(model);
+            var mappedTree = _mapper.Map<IEnumerable<NodeModel>>(response);
+            
+            return Ok(mappedTree);
         }
     }
 }

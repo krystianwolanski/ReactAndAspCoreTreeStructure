@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TreeWithReact.Entities;
 using TreeWithReact.Helpers;
+using TreeWithReact.Models;
 using TreeWithReact.Models.LeafModels;
 
 namespace TreeWithReact.Services
@@ -14,13 +15,16 @@ namespace TreeWithReact.Services
         Task<Leaf> AddLeafAsync(AddLeafModel model);
         Task<bool> EditLeafAsync(EditLeafModel model);
         Task<bool> DeleteLeafAsync(DeleteLeafModel model);
+        Task<IEnumerable<Node>> MoveLeafAsync(MoveElementModel model);
     }
     public class LeafService:ILeafService
     {
         private readonly DataContext _context;
-        public LeafService(DataContext context)
+        private ITreeService _treeService;
+        public LeafService(DataContext context, ITreeService treeService)
         {
             _context = context;
+            _treeService = treeService;
         }
         public async Task<Leaf> AddLeafAsync(AddLeafModel model)
         {
@@ -56,6 +60,17 @@ namespace TreeWithReact.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IEnumerable<Node>> MoveLeafAsync(MoveElementModel model)
+        {
+            var leaf = await _context.Leaves.SingleOrDefaultAsync(x => x.LeafId == model.ElementId);
+            leaf.ParentNodeId = model.ToNodeId;
+
+            await _context.SaveChangesAsync();
+            var tree = await _treeService.GetTreeAsync();
+
+            return tree;
         }
     }
 }

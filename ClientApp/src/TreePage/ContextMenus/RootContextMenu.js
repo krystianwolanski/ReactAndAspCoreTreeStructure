@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 
-export class LeafContextMenu extends Component{
+export class RootContextMenu extends Component{
 
     render(){
         return(
@@ -9,15 +9,10 @@ export class LeafContextMenu extends Component{
                 <ul className="contextMenu" style={{left: this.props.left, top: this.props.top}}>
                     <li onClick={(event) => {
                         event.stopPropagation()
-                        this.props.showEditLeafModal()
+                        this.props.showAddNodeModal()
                         this.props.hide()
-                    }}>Edit</li>
-
-                    <li onClick={(event) => {
-                        event.stopPropagation()
-                        this.props.deleteLeaf()
-                        this.props.hide()
-                    }}>Delete</li>
+                    }}>Add Node</li>
+                    
                 </ul>
             </React.Fragment>
         )

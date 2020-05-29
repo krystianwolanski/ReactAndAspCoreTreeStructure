@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Modal, Button, Form} from 'react-bootstrap'
+import {Modal, Button} from 'react-bootstrap'
 
 export class DeleteNodeModal extends Component {
 
@@ -8,17 +8,17 @@ export class DeleteNodeModal extends Component {
             <Modal
                 onHide={() => this.props.onHide()}
                 show={this.props.show}
-                size="sm"
+                size="md"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
             <Modal.Header closeButton>
             </Modal.Header>
             <Modal.Body>
-                Nie możesz usunąć węzła, bo zawiera inne węzły. 
+                The node cannot be deleted because it contains subnodes or subleaves
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => this.props.onHide()}>Zamknij</Button>
+                <Button onClick={() => this.props.onHide()}>Close</Button>
             </Modal.Footer>
             </Modal>
         );

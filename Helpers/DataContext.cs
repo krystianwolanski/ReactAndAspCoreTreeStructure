@@ -30,13 +30,13 @@ namespace TreeWithReact.Helpers
             modelBuilder.Entity<Node>()
                 .HasMany(cat => cat.SubNodes)
                 .WithOne(cat => cat.ParentNode)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
 
             modelBuilder.Entity<Node>()
                 .HasMany(cat => cat.SubLeaves)
                 .WithOne(cat => cat.ParentNode)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.NoAction);
                 
         }
 

@@ -4,7 +4,8 @@ import { leafConstants } from '../_constants'
 export const leafActions = {
     addLeaf,
     editLeaf,
-    deleteLeaf
+    deleteLeaf,
+    moveLeaf
 }
 
 function addLeaf(Name, ParentNodeId ) {
@@ -52,4 +53,19 @@ function deleteLeaf(LeafId) {
     function request() { return { type: leafConstants.DELETE_LEAF_REQUEST } }
     function success(LeafId) { return { type: leafConstants.DELETE_LEAF_SUCCESS, LeafId } }
     function failure(error) { return { type: leafConstants.DELETE_LEAF_FAILURE, error } }
+}
+function moveLeaf(leafId, toNodeId) {
+    return dispatch => {
+        dispatch(request(leafId, toNodeId))
+
+        leafService.moveLeaf(leafId, toNodeId)
+            .then(
+                items => dispatch(success(items)),
+                error => dispatch(failure(error))
+            )
+    }
+
+    function request(fromNodeId, toNodeId) { return { type: leafConstants.MOVE_LEAF_REQUEST, fromNodeId, toNodeId } }
+    function success(items) { return { type: leafConstants.MOVE_LEAF_SUCCESS, items } }
+    function failure(error) { return { type: leafConstants.MOVE_LEAF_FAILURE, error } }
 }

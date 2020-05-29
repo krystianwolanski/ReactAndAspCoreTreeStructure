@@ -14,7 +14,11 @@ class EditNodeModal extends Component {
     }
     editNode() {
         const {editNode} = this.props
-        editNode(this.props.nodeId, this.state.nodeName)
+
+        if(this.state.nodeName){
+            editNode(this.props.nodeId, this.state.nodeName)
+        }
+        
         this.hideAndClearName()
     }
     hideAndClearName() {

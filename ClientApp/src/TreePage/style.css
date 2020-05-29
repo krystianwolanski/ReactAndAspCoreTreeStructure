@@ -1,15 +1,33 @@
-
+body{
+    
+}
+.title{
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    user-select: none;
+}
+.ownContainer{
+ 
+    width: fit-content;
+    margin: 5%;
+}
+.treeContextMenuUl > li{
+    width: 300px;
+}
 li{
     list-style: none;
+    
 }
 
 li > div{
     cursor: pointer;
     padding: 10px;
-    width: 50%;
     display: flex;
     align-items: center;
     user-select: none;
+    transition: background-color .15s ease-in-out;
 }
 li>div:hover{
     background-color:lightgreen;
@@ -28,6 +46,7 @@ li>div:hover{
 .contextMenu > li{
     padding: 10px 35px;
     cursor: pointer;
+    transition: background-color .15s ease-in;
 }
 .contextMenu >li:hover{
     background-color: lightgray;
@@ -39,7 +58,7 @@ li>div:hover{
 }
 
 .arrow {
-    border: solid black;
+    border: solid rgb(70, 70, 70);
     border-width: 0 2px 2px 0;
     padding: 3px;
   }
@@ -64,4 +83,5 @@ li>div:hover{
       display: none;
       
   }
+
 

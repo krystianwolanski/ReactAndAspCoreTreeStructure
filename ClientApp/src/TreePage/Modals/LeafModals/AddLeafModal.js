@@ -13,7 +13,10 @@ class AddLeafModal extends Component {
     this.setState({leafName: target.value})
   }
   addLeaf(parentNodeId) {
-    this.props.addLeaf(this.state.leafName, parentNodeId)
+    if(this.state.leafName){
+      this.props.addLeaf(this.state.leafName, parentNodeId)
+    }
+    
     this.hideAndClearName()
   }
   hideAndClearName() {

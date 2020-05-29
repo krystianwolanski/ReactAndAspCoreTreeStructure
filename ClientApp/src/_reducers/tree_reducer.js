@@ -24,7 +24,7 @@ export function tree(state = {}, action) {
             }
         case nodeConstants.ADD_NODE_SUCCESS:   
 
-            addSubNode(state.items)
+            addNode(state.items)
 
             return {
                 items: state.items,
@@ -59,7 +59,9 @@ export function tree(state = {}, action) {
                 deletingNode: true
             }
         case nodeConstants.DELETE_NODE_SUCCESS:
+            deleteNode(state.items)
             return{
+                items: state.items,
                 deletingNode: false
             }
         case nodeConstants.DELETE_NODE_FAILURE:
@@ -71,6 +73,21 @@ export function tree(state = {}, action) {
             sortNode(state.items)
             return {
                 items: state.items
+            }
+        case nodeConstants.MOVE_NODE_REQUEST:
+            return {
+                items: state.items,
+                nodeMoving: true
+            }
+        case nodeConstants.MOVE_NODE_SUCCESS:
+            return {
+                items: action.items,
+                nodeMoving: false
+            }
+        case nodeConstants.MOVE_NODE_FAILURE:
+            return {
+                items: state.items,
+                error: action.error
             }
         case leafConstants.ADD_LEAF_REQUEST:
             return {
@@ -119,12 +136,32 @@ export function tree(state = {}, action) {
                 items: state.items,
                 error: action.error
             }
+        case leafConstants.MOVE_LEAF_REQUEST:
+            return {
+                items: state.items,
+                leafMoving: true
+            }
+        case leafConstants.MOVE_LEAF_SUCCESS:
+            return {
+                items: action.items,
+                leafMoving: false
+            }
+        case leafConstants.MOVE_LEAF_FAILURE:
+            return {
+                items: state.items,
+                error: action.error
+            }    
         
         default:
             return state;
     }
     
-    function addSubNode(subNodes) {
+    function addNode(subNodes) {
+        if(action.parentNodeId === null){
+            subNodes.push(action.item)
+
+            return subNodes
+        }
         subNodes.forEach(element => {
             if (element.nodeId === action.parentNodeId) {
                 element.subNodes.push(action.item)
@@ -132,7 +169,7 @@ export function tree(state = {}, action) {
                 return subNodes
             }
             else {
-                addSubNode(element.subNodes)
+                addNode(element.subNodes)
             }
         });
     }
@@ -174,13 +211,25 @@ export function tree(state = {}, action) {
             editLeaf(node.subNodes)
         })
     }
+    function deleteNode(subNodes) {
+        subNodes.forEach( node => {
+            if(node.nodeId === action.NodeId){
+                const index = subNodes.indexOf(node)
+                subNodes.splice(index, 1)
+                
+                return node
+            }
+            else{
+                deleteNode(node.subNodes)
+            }
+        })
+    }
     function deleteLeaf(subNodes) {
         subNodes.forEach( node => {
             if(node.subLeaves.length > 0) {
                 node.subLeaves.forEach( leaf => {
                     if(leaf.leafId === action.LeafId) {
-                        const index = node.subLeaves.indexOf(leaf.leafId)
-
+                        const index = node.subLeaves.indexOf(leaf)
                         node.subLeaves.splice(index, 1)
 
                         return node.subLeaves

@@ -1,7 +1,8 @@
 export const nodeService = {
     addNode,
     editNode,
-    deleteNode
+    deleteNode,
+    moveNode
 }
 
 function addNode(Name, ParentNodeId) {
@@ -32,7 +33,15 @@ function deleteNode(NodeId) {
 
     return fetch('node', requestOptions).then(handleResponse)
 }
+function moveNode(ElementId, ToNodeId) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ElementId, ToNodeId})
+    }
 
+    return fetch('node/move', requestOptions).then(handleResponse)
+}
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text)

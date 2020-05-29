@@ -13,7 +13,9 @@ class AddNodeModal extends Component {
     this.setState({nameNode: target.value})
   }
   addNode(parentNodeId) {
-    this.props.addNode(this.state.nameNode, parentNodeId)
+    if(this.state.nameNode){
+      this.props.addNode(this.state.nameNode, parentNodeId)
+    }
     this.hideAndClearName()
   }
   hideAndClearName() {

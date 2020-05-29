@@ -5,7 +5,8 @@ export const nodeActions = {
     addNode,
     editNode,
     deleteNode,
-    sortNode
+    sortNode,
+    moveNode
 }
 
 function addNode(Name, ParentNodeId ) {
@@ -41,18 +42,33 @@ function editNode(NodeId, Name ) {
 }
 function deleteNode(NodeId ) {
     return dispatch => {
-        dispatch(request())
+        dispatch(request(NodeId))
 
         nodeService.deleteNode(NodeId)
             .then(
-                item => dispatch(success(item)),
+                item => dispatch(success(NodeId)),
                 error => dispatch(failure(error))
             )
     }
 
-    function request() { return { type: nodeConstants.DELETE_NODE_REQUEST } }
-    function success(item) { return { type: nodeConstants.DELETE_NODE_SUCCESS, item } }
+    function request(NodeId) { return { type: nodeConstants.DELETE_NODE_REQUEST, NodeId } }
+    function success(NodeId) { return { type: nodeConstants.DELETE_NODE_SUCCESS, NodeId } }
     function failure(error) { return { type: nodeConstants.DELETE_NODE_FAILURE, error } }
+}
+function moveNode(nodeId, toNodeId) {
+    return dispatch => {
+        dispatch(request(nodeId, toNodeId))
+
+        nodeService.moveNode(nodeId, toNodeId)
+            .then(
+                items => dispatch(success(items)),
+                error => dispatch(failure(error))
+            )
+    }
+
+    function request(nodeId, toNodeId) { return { type: nodeConstants.MOVE_NODE_REQUEST, nodeId, toNodeId } }
+    function success(items) { return { type: nodeConstants.MOVE_NODE_SUCCESS, items } }
+    function failure(error) { return { type: nodeConstants.MOVE_NODE_FAILURE, error } }
 }
 function sortNode(NodeId) {
     return dispatch => {

@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TreeWithReact.Entities;
+using TreeWithReact.Models;
 using TreeWithReact.Models.LeafModels;
 using TreeWithReact.Services;
 
@@ -50,6 +52,14 @@ namespace TreeWithReact.Controllers
             var response = await _leafService.DeleteLeafAsync(model);
 
             return Ok();
+        }
+        [HttpPost("move")]
+        public async Task<IActionResult> MoveLeaf([FromBody] MoveElementModel model)
+        {
+            var response = await _leafService.MoveLeafAsync(model);
+            var mappedTree = _mapper.Map<IEnumerable<Node>>(response);
+
+            return Ok(mappedTree);
         }
     }
 }

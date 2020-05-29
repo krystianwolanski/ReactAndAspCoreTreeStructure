@@ -1,7 +1,8 @@
 export const leafService = {
     addLeaf,
     editLeaf,
-    deleteLeaf
+    deleteLeaf,
+    moveLeaf
 }
 
 function addLeaf(Name, ParentNodeId) {
@@ -31,6 +32,15 @@ function deleteLeaf(LeafId) {
     }
 
     return fetch('leaf', requestOptions).then(handleResponse)
+}
+function moveLeaf(ElementId, ToNodeId) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ElementId, ToNodeId})
+    }
+
+    return fetch('leaf/move', requestOptions).then(handleResponse)
 }
 
 function handleResponse(response) {

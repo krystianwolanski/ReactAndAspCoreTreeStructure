@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/redux-logger": "^3.0.7",
     "bootstrap": "^4.5.0",
+    "bootswatch": "^4.5.0",
     "connected-react-router": "6.5.2",
     "history": "4.10.1",
     "jquery": "^3.5.1",

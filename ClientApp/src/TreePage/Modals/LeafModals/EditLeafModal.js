@@ -13,7 +13,10 @@ class EditLeafModal extends Component {
         this.setState({leafName: target.value})
     }
     editLeaf() {
-        this.props.editLeaf(this.props.leafId, this.state.leafName)
+        if(this.state.leafName){
+            this.props.editLeaf(this.props.leafId, this.state.leafName)
+        }
+        
         this.hideAndClearName()
     }
     hideAndClearName() {
