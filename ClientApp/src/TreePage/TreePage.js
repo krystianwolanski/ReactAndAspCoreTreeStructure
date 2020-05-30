@@ -33,7 +33,8 @@ class TreePage extends Component {
 
         dragStartElement: '',
         dragStartElementType:'',
-        dropId: 0
+        dropId: 0,
+
       }
     
     componentDidMount(){
@@ -135,12 +136,33 @@ class TreePage extends Component {
       event.preventDefault()
 
     }
+    
+    elementInSubNodes(node, toNode) {
+      let isInSub = false;
+      
+      function elinsub(node, toNode) {
+        node.subNodes.forEach( node => {
+          if(node.nodeId === toNode.nodeId) {
+            console.log("HEK")
+            isInSub = true
+          }
+          else{
+            elinsub(node, toNode)     
+          }
+        })
+      }
+      elinsub(node, toNode)
+      return isInSub
+    }
     handleOnDrop(event, node){
       event.preventDefault()
       
       const {dragStartElement, dragStartElementType} = this.state
+
       if(dragStartElementType === 'node') {
-        if(!node.subNodes.includes(dragStartElement) && !dragStartElement.subNodes.includes(node) && (dragStartElement.nodeId !== node.nodeId) ) {
+        const elementInSubNodes = this.elementInSubNodes(dragStartElement, node)
+        console.log("TUTAJ ",elementInSubNodes)
+        if(!elementInSubNodes && (dragStartElement.nodeId !== node.nodeId) ) {
           this.props.moveNode(dragStartElement.nodeId, node.nodeId)
         }
       }
@@ -150,15 +172,7 @@ class TreePage extends Component {
         }
       }
     }
-    handleOnLeafDrop(event, node) {
-      event.preventDefault()
 
-      const {dragStartElement} = this.state
-      
-      if(!node.subNodes.includes(dragStartElement) && !dragStartElement.subNodes.includes(node) && (dragStartElement.nodeId !== node.nodeId) ) {
-        this.props.moveNode(dragStartElement.nodeId, node.nodeId)
-      }
-    }
     handleOnDragNodeStart(element){
       this.setState({dragStartElement: element, dragStartElementType: 'node', selectedItem: ''})
     }
